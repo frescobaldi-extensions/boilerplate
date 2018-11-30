@@ -1,0 +1,20 @@
+#
+# Boilerplate Frescobaldi extension
+#
+
+extension-name: Boilerplate
+short-description: Template for creating a Frescobaldi extension
+description: <
+  This extension template is a minimal working Frescobaldi extension
+  and can be used to build upon. It provides stubs for all relevant
+  functionality and may serve as a “cheat sheet” for the integration
+  of extensions.
+  >
+api-version: 0.0.1
+maintainers: [
+  Urs Liska <git@ursliska.de>
+  ]
+version: 0.0.1
+license: GPL3
+website: https://github.com/frescobaldi-extensions/boilerplate
+repository: https://github.com/frescobaldi-extensions/boilerplate.git
