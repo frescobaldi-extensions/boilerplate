@@ -1,4 +1,4 @@
-# Frescobaldi Sample Extension
+# Frescobaldi Boilerplate Extension
 
 This repository contains a minimal working boilerplate extension for
 [Frescobaldi](http://frescobaldi.org). It can be used to quickly start creating
