@@ -38,7 +38,6 @@ class Extension(extensions.Extension):
     """
 
     # Extension configuration through class variables
-    _display_name = "Boilerplate"
     _action_collection_class = actions.Actions
     _panel_widget_class = widget.Widget
     _panel_dock_area = Qt.LeftDockWidgetArea
