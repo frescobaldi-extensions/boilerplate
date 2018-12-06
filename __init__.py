@@ -42,6 +42,10 @@ class Extension(extensions.Extension):
     _panel_widget_class = widget.Widget
     _panel_dock_area = Qt.LeftDockWidgetArea
     _config_widget_class = config.Config
+    _settings_config = {
+        'show': True,
+        'message': _("Initial extension message")
+    }
 
     def __init__(self, global_extensions):
         # __init__ is not necessarily needed, can be removed
@@ -49,7 +53,6 @@ class Extension(extensions.Extension):
 
     def app_settings_changed(self):
         """Update extension status after settings change."""
-        # Use ExtensionSettings instead of QSettings
-        s = extensions.ExtensionSettings()
+        # This is called automatically by the Extension base class
         ac = self.action_collection()
-        ac.generic_action.setEnabled(s.value('boilerplate/show', True, bool))
+        ac.generic_action.setEnabled(self.settings().get('show'))

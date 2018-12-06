@@ -29,8 +29,6 @@ from PyQt5.QtWidgets import (
     QWidget
 )
 
-from extensions import ExtensionSettings
-
 # This may be any QWidget descendant
 class Config(QWidget):
     """Configuration widget, shown in the Preferences page."""
@@ -51,16 +49,19 @@ class Config(QWidget):
         self.line_edit = QLineEdit()
         layout.addWidget(self.line_edit)
 
-        self.check_box = QCheckBox()
+        # Check box's 'toggled' signal is mapped to group.changed
+        # Any modification must trigger the group's changed signal,
+        # and this is one way to do it.
+        self.check_box = QCheckBox(toggled=group.changed)
         layout.addWidget(self.check_box)
 
         layout.addStretch()
 
         # processing after widgets have been instantiated
+        # must be added manually
 
         self.connect_signals()
         self.translateUI()
-
 
     # Implement mandatory methods
 
@@ -69,24 +70,16 @@ class Config(QWidget):
         self.check_box.setText(_("Enable action"))
 
     def load_settings(self):
-        # Use extensions.ExtensionSettings() instead of QSettings()
-        s = ExtensionSettings()
-        s.beginGroup('boilerplate')
-        self.check_box.setChecked(s.value('show', False, bool))
-        self.line_edit.setText(
-            s.value('message', _("Initial action message"), str))
+        self.check_box.setChecked(self.settings().get('show'))
+        self.line_edit.setText(self.settings().get('message'))
 
     def save_settings(self):
-        s = ExtensionSettings()
-        s.beginGroup('boilerplate')
-        s.setValue('show', self.check_box.isChecked())
-        s.setValue('message', self.line_edit.text())
+        self.settings().set('show', self.check_box.isChecked())
+        self.settings().set('message', self.line_edit.text())
 
 
     # Implement custom methods
 
     def connect_signals(self):
-        # Ensure Preferences are considered modified
-        for s in [self.check_box.toggled,
-                  self.line_edit.textChanged]:
-            s.connect(self.parent().changed)
+        # This is another way to trigger the group's changed signal
+        self.line_edit.textChanged.connect(self.parent().changed)

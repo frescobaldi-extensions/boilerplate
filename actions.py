@@ -21,7 +21,7 @@
 # Boilerplate Extension - Action collection
 
 from PyQt5.QtWidgets import QAction
-from extensions import actions, ExtensionSettings
+from extensions import actions
 import icons
 
 class Actions(actions.ExtensionActionCollection):
@@ -34,12 +34,16 @@ class Actions(actions.ExtensionActionCollection):
         # Icons can be loaded from the extension's `icons` subdirectory
         self.generic_action.setIcon(icons.get('twotone-calendar_view_day-24px'))
 
+# Implicitly called functions
+
+    # This must be implemented
     def translateUI(self):
         self.generic_action.setText(_("Generic action (print message)"))
         self.generic_action.setToolTip(
             _("A longer text "
               "stored as multiline string"))
 
+    # The following functions *can* be implemented
     def configure_menu_actions(self):
         """Specify the behaviour of the menus."""
 
@@ -56,17 +60,17 @@ class Actions(actions.ExtensionActionCollection):
         """Connect actions to their handlers."""
         self.generic_action.triggered.connect(self.generic_action_triggered)
 
+    def load_settings(self):
+        """Load settings from settings file."""
+        # Main use is to enable and disable actions
+        self.generic_action.setEnabled(self.settings().get('show'))
+
+# Custom functionality
+
     def generic_action_triggered(self):
-        """Standalone action showing a message box."""
-        s = ExtensionSettings()
-        s.beginGroup('boilerplate')
+        """Standalone action"""
         print(
             _("Action triggered by extension '{}'".format(
                 self.extension().display_name())))
         print(_("Custom message:"))
-        print(s.value('message', _("Initial action message"), str))
-
-    def load_settings(self):
-        s = ExtensionSettings()
-        s.beginGroup('boilerplate')
-        self.generic_action.setEnabled(s.value('show', True, bool))
+        print(self.settings().get('message'))
