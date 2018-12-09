@@ -52,7 +52,12 @@ class Extension(extensions.Extension):
         super(Extension, self).__init__(global_extensions)
 
     def app_settings_changed(self):
-        """Update extension status after settings change."""
+        """Update extension status after global settings change."""
         # This is called automatically by the Extension base class
-        ac = self.action_collection()
-        ac.generic_action.setEnabled(self.settings().get('show'))
+        pass
+
+    def settings_changed(self, key, old, new):
+        """Update extension status after extension settings change."""
+        # this is triggered before app_settings_changed
+        if key == 'show':
+            self.action_collection().generic_action.setEnabled(new)
