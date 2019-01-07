@@ -47,9 +47,9 @@ class Extension(extensions.Extension):
         'message': _("Initial extension message")
     }
 
-    def __init__(self, global_extensions):
+    def __init__(self, parent, name):
         # __init__ is not necessarily needed, can be removed
-        super(Extension, self).__init__(global_extensions)
+        super(Extension, self).__init__(parent, name)
 
     def app_settings_changed(self):
         """Update extension status after global settings change."""
